@@ -1,1 +1,58 @@
+:PROPERTIES:
+:ID:       fa113cbd-e8d3-42c5-97ae-eaa82a8257ec
+:END:
 #+TITLE: ⚙️ My Config
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.doom.d/config.el
+
+* Emacs Config
+:PROPERTIES:
+:ID:       ef84f824-9440-42b2-b69d-bc07aa10c5ef
+:END:
+** Headers
+#+begin_src emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
+
+** General
+#+begin_src emacs-lisp
+(setq user-full-name "Urban Avsec"
+      user-mail-address "urban.avsec@outlook.com")
+#+end_src
+
+** UI
+
+Set ups the main theme of my emacs
+#+begin_src emacs-lisp
+
+(setq doom-theme 'doom-one)
+(setq display-line-numbers-type t)
+
+#+end_src
+
+** Org
+*** Auto Tangle My Main Configuration File
+
+#+begin_src emacs-lisp
+
+(defun urb/org-babel-tangle-my-configs ()
+  (when (string-equal (buffer-file-name)
+                      (expand-file-name "~/.dotenv/README.org"))
+    (let ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle))))
+
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'urb/org-babel-tangle-my-configs)))
+
+#+end_src
+
+*** Org Roam
+#+begin_src emacs-lisp
+
+(setq org-directory "~/org/")
+(use-package! org-roam
+  :init
+  (setq org-roam-v2-ack t)
+  :config
+  (setq org-roam-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Cortex")
+  (org-roam-db-autosync-mode))
+
+#+end_src
