@@ -255,6 +255,22 @@ Lodas ~org-roam~ package and provides basic configuration
   (setq org-roam-v2-ack t)
   :config
   (setq org-roam-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Cortex")
-  (org-roam-db-autosync-mode))
+  (org-roam-setup))
+
+
+#+end_src
+
+Provides the key bindings for org-roam in my system
+
+#+begin_src emacs-lisp
+
+(map! (:map org-mode-map
+        :leader
+        :prefix ("nr" . "org-roam")
+        "f" #'org-roam-node-find
+        "i" #'org-roam-node-insert
+        "I" #'org-id-get-create
+        "s" #'org-roam-db-sync
+        "m" #'org-roam-buffer-toggle))
 
 #+end_src
