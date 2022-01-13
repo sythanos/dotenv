@@ -233,8 +233,48 @@ Set ups the main theme of my emacs
 
 #+end_src
 
-*** Org Roam
+*** Citations in Org Files
+Setup Org Cite Package
+#+begin_src emacs-lisp
 
+(use-package! oc
+  :defer t
+  :config
+  (setq org-cite-global-bibliography '("~/Library/Mobile Documents/com~apple~CloudDocs/Cortex/MyReferences.bib")))
+
+#+end_src
+
+Use the ~org-cite~ processors
+
+#+begin_src emacs-lisp
+
+(use-package! oc-biblatex :after oc)
+
+#+end_src
+
+Let's install ~citar~ pacakge which will offer the UI interface for interacting with my bibtex file.
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! citar)
+
+#+end_src
+
+Configure ~citar~ pacakge to work in org mode
+
+#+begin_src emacs-lisp
+(use-package! citar
+  :no-require
+  :config
+  (setq org-cite-insert-processor 'citar
+        org-cite-follow-processor 'citar
+        org-cite-activate-processor 'citar)
+  (setq citar-file-note-org-include '(org-id org-roam-ref)
+        citar-bibliography org-cite-global-bibliography)
+)
+#+end_src
+
+
+*** Org Roam
 Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
 
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
