@@ -263,16 +263,14 @@ Configure ~citar~ pacakge to work in org mode
 
 #+begin_src emacs-lisp
 (use-package! citar
+  :after oc
   :no-require
   :config
   (setq org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
-  (setq citar-file-note-org-include '(org-id org-roam-ref)
-        citar-bibliography org-cite-global-bibliography)
-)
+  (setq citar-bibliography org-cite-global-bibliography))
 #+end_src
-
 
 *** Org Roam
 Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
@@ -312,5 +310,43 @@ Provides the key bindings for org-roam in my system
         "I" #'org-id-get-create
         "s" #'org-roam-db-sync
         "m" #'org-roam-buffer-toggle))
+
+#+end_src
+
+**** Org Roam Bibtex
+
+Integrate ~org-roam~ with my citations using ~org-roam-bibtex~
+
+Firstly install ~org-roam-bibtex~ from repo
+
+#+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
+
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+
+#+end_src
+
+Then enable the package and integrate it with the ~citar~ citation procesor. For its config look at [[Citations in Org Files]] section.
+
+#+begin_src emacs-lisp
+(use-package! org-roam-bibtex
+  :after org-roam
+  :config
+  (setq bibtex-completion-bibliography org-cite-global-bibliography
+        citar-open-note-function 'orb-citar-edit-note
+        citar-notes-paths (list org-roam-directory))
+  (org-roam-bibtex-mode))
+
+#+end_src
+
+Adds the core keybindings for interraction with references from emacs
+
+#+begin_src emacs-lisp
+(map! (:map org-mode-map
+       :leader
+       :prefix ("nR" . "cite & ref")
+       "n" #'citar-open-notes
+       "i" #'org-cite-insert
+       "a" #'orb-note-actions))
 
 #+end_src
