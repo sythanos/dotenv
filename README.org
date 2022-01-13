@@ -313,6 +313,24 @@ Provides the key bindings for org-roam in my system
 
 #+end_src
 
+I use two core templates for new org-roam nodes.
++ /Note/ - Is the plain note template for general purpose note placed in the root of my cortex.
++ /Reference/ - Is a structured note template for notes which track my processed references and bibliography.
+
+#+begin_src emacs-lisp
+
+(after! org-roam
+  (setq org-roam-capture-templates
+        '(("n" "Note" plain "%?"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE:${title}\n")
+           :unnarrowed t)
+          ("r" "Reference" plain "%?"
+           :target (file+head "References/${citekey}.org"
+                              "#+TITLE:${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")))))
+
+#+end_src
+
+
 **** Org Roam Bibtex
 
 Integrate ~org-roam~ with my citations using ~org-roam-bibtex~
