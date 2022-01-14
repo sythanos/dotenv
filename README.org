@@ -298,6 +298,15 @@ Lodas ~org-roam~ package and provides basic configuration
 
 #+end_src
 
+Configures my org-roam dailies
+
+#+begin_src emacs-lisp
+
+(after! org-roam
+  (setq org-roam-dailies-directory "Journal/"))
+
+#+end_src
+
 Provides the key bindings for org-roam in my system
 
 #+begin_src emacs-lisp
@@ -308,6 +317,7 @@ Provides the key bindings for org-roam in my system
         "f" #'org-roam-node-find
         "i" #'org-roam-node-insert
         "I" #'org-id-get-create
+        "t" #'org-roam-dailies-goto-today
         "s" #'org-roam-db-sync
         "m" #'org-roam-buffer-toggle))
 
@@ -329,6 +339,7 @@ I use two core templates for new org-roam nodes.
                               "#+TITLE:${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")))))
 
 #+end_src
+
 
 
 **** Org Roam Bibtex
