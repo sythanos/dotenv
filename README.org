@@ -209,6 +209,13 @@
       user-mail-address "urban.avsec@outlook.com")
 #+end_src
 
+Let's define some useful path varialbes for rest of configuration
+#+begin_src emacs-lisp
+
+(defvar urb/iCloud-path "~/Library/Mobile Documents/com~apple~CloudDocs/")
+
+#+end_src
+
 ** UI
 
 Set ups the main theme of my emacs
@@ -235,21 +242,11 @@ Set ups the main theme of my emacs
 #+end_src
 
 *** Citations in Org Files
-Setup Org Cite Package
+
+Let's first define path to my =.bib= file and location where my pdfs and epubs will be stored
 #+begin_src emacs-lisp
-
-(use-package! oc
-  :defer t
-  :config
-  (setq org-cite-global-bibliography '("~/Library/Mobile Documents/com~apple~CloudDocs/Cortex/MyReferences.bib")))
-
-#+end_src
-
-Use the ~org-cite~ processors
-
-#+begin_src emacs-lisp
-
-(use-package! oc-biblatex :after oc)
+(defvar urb/reference-files (list (concat urb/iCloud-path "Library/References.bib")))
+(defvar urb/reference-sources-dirs (list(concat urb/iCloud-path "Library/Files/")))
 
 #+end_src
 
@@ -261,16 +258,64 @@ Let's install ~citar~ pacakge which will offer the UI interface for interacting 
 #+end_src
 
 Configure ~citar~ pacakge to work in org mode
-
 #+begin_src emacs-lisp
 (use-package! citar
-  :after oc
+  :after org
   :no-require
   :config
   (setq org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
-  (setq citar-bibliography org-cite-global-bibliography))
+  (setq citar-bibliography urb/reference-files
+        citar-library-paths urb/reference-sources-dirs))
+#+end_src
+
+Finally setup Org Cite package to enable the citations
+#+begin_src emacs-lisp
+
+(use-package! oc
+  :after citar
+  :defer t
+  :config
+  (setq org-cite-global-bibliography '("~/Library/Mobile Documents/com~apple~CloudDocs/Library/References.bib")))
+
+#+end_src
+
+Use the ~org-cite~ processors
+#+begin_src emacs-lisp
+
+(use-package! oc-biblatex :after oc)
+
+#+end_src
+
+Let's also install ~org-ref~ to get bibtex support functions
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! org-ref)
+
+#+end_src
+
+And finally enable it
+#+begin_src emacs-lisp
+
+(use-package! org-ref
+  :after org
+  :config
+  (setq bibtex-completion-bibliography urb/reference-files))
+
+#+end_src
+
+Provide some good keybinds
+#+begin_src emacs-lisp
+
+(map! (:map org-mode-map
+       :leader
+       :prefix ("R" . "cite & ref")
+       "n" #'citar-open-notes
+       "i" #'org-cite-insert
+       "I" #'isbn-to-bibtex
+       "R" #'citar-refres))
+
 #+end_src
 
 *** Let's Make It Pretty with Org-Download
@@ -416,9 +461,7 @@ Adds the core keybindings for interraction with references from emacs
 #+begin_src emacs-lisp
 (map! (:map org-mode-map
        :leader
-       :prefix ("nR" . "cite & ref")
-       "n" #'citar-open-notes
-       "i" #'org-cite-insert
+       :prefix ("R" . "cite & ref")
        "a" #'orb-note-actions))
 
 #+end_src
