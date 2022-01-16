@@ -3,6 +3,7 @@
 :END:
 #+TITLE: ⚙️ My Config
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.doom.d/config.el
+#+STARTUP: fold
 
 * Emacs Config
 :PROPERTIES:
@@ -161,7 +162,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +pretty +dragndrop)               ; organize your plain life in plain text
+       (org +pretty)       ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -272,6 +273,48 @@ Configure ~citar~ pacakge to work in org mode
   (setq citar-bibliography org-cite-global-bibliography))
 #+end_src
 
+*** Let's Make It Pretty with Org-Download
+
+Install ~org-download~
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! org-download)
+
+#+end_src
+
+And Enable it
+#+begin_src emacs-lisp
+
+(use-package! org-download)
+
+#+end_src
+
+The ~org-download~ should download all photos and other media in =/{org-dir}/Media= folder with some basic default settings.
+#+begin_src emacs-lisp
+
+(after! org
+  :config
+  (setq-default org-download-image-dir "Media"
+        org-download-heading-lvl nil)
+  (setq org-download-method 'directory
+        org-download-timestamp "_%Y%m%d_%H%M%S"
+        org-download-screenshot-method
+          (cond (IS-MAC "screencapture -i %s"))
+        org-download-annotate-function (lambda (_link) "#+ATTR_ORG: :width 300px\n")))
+
+#+end_src
+
+Finally provide keymaps to easily add pictures while I write my org files
+#+begin_src emacs-lisp
+
+(after! org
+    (map! (:map org-mode-map
+          :leader
+          :prefix ("nr" . "org-roam")
+          "S" #'org-download-screenshot)))
+
+#+end_src
+
 *** Org Roam
 Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
 
@@ -287,7 +330,7 @@ Lodas ~org-roam~ package and provides basic configuration
 
 #+begin_src emacs-lisp
 
-(setq org-directory "~/org/")
+(setq org-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Cortex")
 (use-package! org-roam
   :init
   (setq org-roam-v2-ack t)
