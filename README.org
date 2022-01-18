@@ -216,6 +216,19 @@ Let's define some useful path varialbes for rest of configuration
 
 #+end_src
 
+Just force the ~visual-line-mode~ on org. Based in [[https://github.com/hlissner/doom-emacs/issues/401][#401]] issue this should be added to =init.el= not config.
+#+begin_src emacs-lisp :tangle ~/.doom.d/init.el
+(setq evil-respect-visual-line-mode t)
+
+#+end_src
+
+Allow the use of native fullscreen window in Mac Emacs
+#+begin_src emacs-lisp
+
+(setq ns-use-native-fullscreen t)
+
+#+end_src
+
 ** UI
 
 Set ups the main theme of my emacs
