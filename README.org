@@ -110,7 +110,7 @@
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
-       ;;pdf               ; pdf enhancements
+       pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
@@ -290,7 +290,7 @@ Finally setup Org Cite package to enable the citations
   :after citar
   :defer t
   :config
-  (setq org-cite-global-bibliography '("~/Library/Mobile Documents/com~apple~CloudDocs/Library/References.bib")))
+  (setq org-cite-global-bibliography urb/reference-files))
 
 #+end_src
 
@@ -311,9 +311,15 @@ Let's also install ~org-ref~ to get bibtex support functions
 And finally enable it
 #+begin_src emacs-lisp
 
-(use-package! org-ref
-  :after org
-  :config
+(use-package! org-ref :after org)
+
+#+end_src
+
+Configure bibtex completion paths
+
+#+begin_src emacs-lisp
+
+(after! org-ref
   (setq bibtex-completion-bibliography urb/reference-files))
 
 #+end_src
@@ -327,7 +333,7 @@ Provide some good keybinds
        "n" #'citar-open-notes
        "i" #'org-cite-insert
        "I" #'isbn-to-bibtex
-       "R" #'citar-refres))
+       "R" #'citar-refresh))
 
 #+end_src
 
@@ -462,8 +468,7 @@ Then enable the package and integrate it with the ~citar~ citation procesor. For
 (use-package! org-roam-bibtex
   :after org-roam
   :config
-  (setq bibtex-completion-bibliography org-cite-global-bibliography
-        citar-open-note-function 'orb-citar-edit-note
+  (setq citar-open-note-function 'orb-citar-edit-note
         citar-notes-paths (list org-roam-directory))
   (org-roam-bibtex-mode))
 
@@ -501,7 +506,7 @@ Finally configure ~org-roam-ui~
 #+begin_src emacs-lisp
 
 (use-package! org-roam-ui
-  :after org-roam
+  :after org-roam org-ref
   :hook (after-init . org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
