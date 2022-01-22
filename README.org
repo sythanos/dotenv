@@ -240,6 +240,17 @@ Set ups the main theme of my emacs
 #+end_src
 
 ** Org
+
+Let's first define some important paths and then set the ~org-directory~, which must be set before org loads up.
+#+begin_src emacs-lisp
+
+(defvar urb/cortex-dir (concat urb/iCloud-path "Cortex/"))
+(setq org-directory urb/cortex-dir)
+
+#+end_src
+
+And now to more specific config.
+
 *** Auto Tangle My Main Configuration File
 
 #+begin_src emacs-lisp
@@ -378,6 +389,15 @@ Finally provide keymaps to easily add pictures while I write my org files
           "S" #'org-download-screenshot)))
 
 #+end_src
+*** Get Organized With Org Agenda
+
+I want to add all of my org files in my cortex to agenda files
+#+begin_src emacs-lisp
+
+(after! org
+  (setq org-agenda-files (list urb/cortex-dir)))
+
+#+end_src
 
 *** Org Roam
 Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
@@ -394,12 +414,11 @@ Lodas ~org-roam~ package and provides basic configuration
 
 #+begin_src emacs-lisp
 
-(setq org-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Cortex")
 (use-package! org-roam
   :init
   (setq org-roam-v2-ack t)
   :config
-  (setq org-roam-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Cortex")
+  (setq org-roam-directory urb/cortex-dir)
   (org-roam-setup))
 
 
