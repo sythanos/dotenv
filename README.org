@@ -405,8 +405,8 @@ I want to add all of my org files in my cortex to agenda files
 #+end_src
 
 *** Org Roam
-Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
 
+Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
 
 (package! org-roam
@@ -415,8 +415,7 @@ Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be
 
 #+end_src
 
-Lodas ~org-roam~ package and provides basic configuration
-
+Loads ~org-roam~ package and provides basic configuration
 #+begin_src emacs-lisp
 
 (use-package! org-roam
@@ -430,7 +429,6 @@ Lodas ~org-roam~ package and provides basic configuration
 #+end_src
 
 Configures my org-roam dailies
-
 #+begin_src emacs-lisp
 
 (after! org-roam
@@ -439,7 +437,6 @@ Configures my org-roam dailies
 #+end_src
 
 Provides the key bindings for org-roam in my system
-
 #+begin_src emacs-lisp
 
 (map! (:map org-mode-map
@@ -457,7 +454,6 @@ Provides the key bindings for org-roam in my system
 I use two core templates for new org-roam nodes.
 + /Note/ - Is the plain note template for general purpose note placed in the root of my cortex.
 + /Reference/ - Is a structured note template for notes which track my processed references and bibliography.
-
 #+begin_src emacs-lisp
 
 (after! org-roam
@@ -467,9 +463,23 @@ I use two core templates for new org-roam nodes.
            :unnarrowed t)
           ("r" "Reference" plain "%?"
            :target (file+head "References/${citekey}.org"
-                              "#+TITLE: ${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")))))
+                              "#+TITLE: ${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")
+           :unnarrowed t))))
 
 #+end_src
+
+I also use special dailies template
+#+begin_src emacs-lisp
+
+(after! org-roam
+  (setq org-roam-dailies-capture-templates
+        '(("d" "Daily" plain "%?"
+           :target (file+head "%<%Y-%m-%d>.org"
+                              "#+TITLE: %<%Y-%m-%d>\n#+FILETAGS: Journal\n \nNext:\nPrevious:\n\n* Journal\n** Morning\n")
+           :unnarrowed t))))
+
+#+end_src
+
 
 
 
