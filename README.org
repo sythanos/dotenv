@@ -39,7 +39,7 @@
        vertico           ; the search engine of the future
 
        :ui
-       ;;deft              ; notational velocity for Emacs
+       deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
@@ -463,11 +463,11 @@ I use two core templates for new org-roam nodes.
 (after! org-roam
   (setq org-roam-capture-templates
         '(("n" "Note" plain "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE:${title}\n")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)
           ("r" "Reference" plain "%?"
            :target (file+head "References/${citekey}.org"
-                              "#+TITLE:${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")))))
+                              "#+TITLE: ${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")))))
 
 #+end_src
 
@@ -538,5 +538,37 @@ Finally configure ~org-roam-ui~
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
+
+#+end_src
+
+*** Searching my notes with help of Deft
+
+I want to use my cortex directory as the target folder for /deft/. I also strip org metadata from the deft window.
+#+begin_src emacs-lisp
+
+(after! deft
+  (setq deft-directory urb/cortex-dir
+        deft-use-filename-as-title nil
+        deft-recursive t
+        deft-strip-summary-regexp
+        (concat "\\("
+                "^:.+:.*\n" ; any line with a :SOMETHING:
+                "\\|^\\*.+.*\n" ; anyline where an asterisk starts the line
+                "\\)")))
+
+#+end_src
+
+Next I change how I display title in deft.
+#+begin_src emacs-lisp
+
+(defun urb/deft-parse-title (file contents)
+  "Parses the FILE and CONTENTS and determines the title shown on the deft search interface."
+    (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
+      (if begin
+          (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
+        (deft-base-filename file))))
+
+(after! deft
+  (advice-add 'deft-parse-title :override #'urb/deft-parse-title))
 
 #+end_src
