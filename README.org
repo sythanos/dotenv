@@ -132,7 +132,7 @@
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
        ;;data              ; config/data formats
-       ;;(dart +flutter)   ; paint ui and not much else
+       (dart +flutter +lsp)   ; paint ui and not much else
        ;;dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
@@ -246,6 +246,14 @@ Let's first define some important paths and then set the ~org-directory~, which 
 
 (defvar urb/cortex-dir (concat urb/iCloud-path "Cortex/"))
 (setq org-directory urb/cortex-dir)
+
+#+end_src
+
+I also want to enable my habits org module to allow tracking of habits in org.
+#+begin_src emacs-lisp
+
+(after! org
+  (add-to-list 'org-modules 'org-habit))
 
 #+end_src
 
