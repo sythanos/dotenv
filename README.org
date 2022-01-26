@@ -480,7 +480,7 @@ I use two core templates for new org-roam nodes.
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)
           ("r" "Reference" plain "%?"
-           :target (file+head "References/${citekey}.org"
+           :target (file+head "Literature/${citekey}.org"
                               "#+TITLE: ${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")
            :unnarrowed t))))
 
