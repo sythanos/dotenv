@@ -259,6 +259,16 @@ I also want to enable my habits org module to allow tracking of habits in org.
 
 And now to more specific config.
 
+*** Styling my org pages
+
+I want to custmize my org keywords
+#+begin_src emacs-lisp
+
+(after! org
+  (setq org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold))))
+
+#+end_src
 *** Auto Tangle My Main Configuration File
 
 #+begin_src emacs-lisp
