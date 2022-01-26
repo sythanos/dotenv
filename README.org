@@ -239,6 +239,22 @@ Set ups the main theme of my emacs
 
 #+end_src
 
+** Tools
+I want to allow emacs to read and display epubs. For this I need to download nov.el package.
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! nov)
+
+#+end_src
+
+And enable the package when opening epub files.
+#+begin_src emacs-lisp
+
+(use-package! nov
+  :mode ("\\.epub\\'" . nov-mode))
+
+#+end_src
+
 ** Org
 
 Let's first define some important paths and then set the ~org-directory~, which must be set before org loads up.
