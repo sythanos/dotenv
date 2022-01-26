@@ -479,7 +479,6 @@ Provides the key bindings for org-roam in my system
         "f" #'org-roam-node-find
         "i" #'org-roam-node-insert
         "I" #'org-id-get-create
-        "t" #'org-roam-dailies-goto-today
         "s" #'org-roam-db-sync
         "m" #'org-roam-buffer-toggle))
 
@@ -506,14 +505,43 @@ I also use special dailies template
 #+begin_src emacs-lisp
 
 (after! org-roam
+  (let ((header (concat "#+TITLE: %<%Y-%m-%d>.org\n"
+                        "#+FILETAGS: Daily\n\n"
+                        "Next: \n"
+                        "Previous: \n\n"
+                        "* Journal\n\n"
+                        "* Day Notes\n\n"))))
+
   (setq org-roam-dailies-capture-templates
-        '(("d" "Daily" plain "%?"
-           :target (file+head "%<%Y-%m-%d>.org"
-                              "#+TITLE: %<%Y-%m-%d>\n#+FILETAGS: Journal\n \nNext:\nPrevious:\n\n* Journal\n** Morning\n")
-           :unnarrowed t))))
+        '(("j" "Journal Entry" plain "%?"
+           :target (file+head+olp "%<%Y-%m-%d>.org" header ("Journal"))
+           :unnarrowed t)
+          ("n" "Day Note" entry "* %<%H:%M>\n%?%i"
+           :target (file+head+olp "%<%Y-%m-%d>.org" header ("Day Notes"))))))
 
 #+end_src
 
+I also want to define a goto functions which will skip the template selection and go straight to daily note
+#+begin_src emacs-lisp
+
+(defun urb/org-roam-goto-today ()
+  (interactive)
+  (org-roam-dailies-capture-today t "n"))
+
+#+end_src
+
+Finally I provide some mappings for the daily notes.
+
+#+begin_src emacs-lisp
+
+(map! (:map org-mode-map
+        :leader
+        :prefix ("nr" . "org-roam")
+        "c" #'org-roam-dailies-capture-today
+        "t" #'urb/org-roam-goto-today))
+
+
+#+end_src
 
 
 
