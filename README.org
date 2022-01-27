@@ -503,21 +503,14 @@ I use two core templates for new org-roam nodes.
 
 I also use special dailies template
 #+begin_src emacs-lisp
-
 (after! org-roam
-  (let ((header (concat "#+TITLE: %<%Y-%m-%d>.org\n"
-                        "#+FILETAGS: Daily\n\n"
-                        "Next: \n"
-                        "Previous: \n\n"
-                        "* Journal\n\n"
-                        "* Day Notes\n\n"))))
-
   (setq org-roam-dailies-capture-templates
-        '(("j" "Journal Entry" plain "%?"
-           :target (file+head+olp "%<%Y-%m-%d>.org" header ("Journal"))
+        '(("d" "Daily Note" plain "%?"
+           :target(file+head "%<%Y-%m-%d>.org"
+           "#+TITLE: %<Y-%m-%d>\n#+FILETAGS: Daily\n \nNext: \nPrevious: \n \n* Morning Kick-off\n")
            :unnarrowed t)
-          ("n" "Day Note" entry "* %<%H:%M>\n%?%i"
-           :target (file+head+olp "%<%Y-%m-%d>.org" header ("Day Notes"))))))
+          ("j" "Day Journal Entry" entry "* %<%H:%M>\n%?%i"
+           :target (file+olp "%<%Y-%m-%d>.org" ("Journal"))))))
 
 #+end_src
 
@@ -526,7 +519,7 @@ I also want to define a goto functions which will skip the template selection an
 
 (defun urb/org-roam-goto-today ()
   (interactive)
-  (org-roam-dailies-capture-today t "n"))
+  (org-roam-dailies-capture-today t "d"))
 
 #+end_src
 
