@@ -261,6 +261,7 @@ Let's first define some important paths and then set the ~org-directory~, which 
 #+begin_src emacs-lisp
 
 (defvar urb/cortex-dir (concat urb/iCloud-path "Cortex/"))
+(defvar urb/cortex-dailies-dir (concat urb/cortex-dir "Journal/"))
 (setq org-directory urb/cortex-dir)
 
 #+end_src
@@ -434,7 +435,7 @@ I want to add all of my org files in my cortex to agenda files
 #+begin_src emacs-lisp
 
 (after! org
-  (setq org-agenda-files (list urb/cortex-dir)))
+  (setq org-agenda-files (list urb/cortex-dir urb/cortex-dailies-dir)))
 
 #+end_src
 
