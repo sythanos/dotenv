@@ -286,6 +286,21 @@ I want to custmize my org keywords
         '(("TODO" :foreground "red" :weight bold))))
 
 #+end_src
+
+I also want to auto-preview latex as soon as I leave the code block. For this I need to install a new pacakge /org-fragtog/
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! org-fragtog)
+
+#+end_src
+
+And then enable it.
+#+begin_src emacs-lisp
+
+(use-package! org-fragtog
+  :init (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+#+end_src
 *** Auto Tangle My Main Configuration File
 
 #+begin_src emacs-lisp
@@ -493,11 +508,11 @@ I use two core templates for new org-roam nodes.
 (after! org-roam
   (setq org-roam-capture-templates
         '(("n" "Note" plain "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: latexpreview\n")
            :unnarrowed t)
           ("r" "Reference" plain "%?"
            :target (file+head "Literature/${citekey}.org"
-                              "#+TITLE: ${title}\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")
+                              "#+TITLE: ${title}\n#+STARTUP: latexpreview\n#+FILETAGS: Reference\n \n* Summary\n* Notes\n")
            :unnarrowed t))))
 
 #+end_src
