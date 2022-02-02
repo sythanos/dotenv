@@ -462,6 +462,21 @@ I want to add all of my org files in my cortex to agenda files
 
 #+end_src
 
+I have two real workflows in my org files:
++ Task Workflow - Simple Five-State Workflow for tasks I want to finish. It uses letter keywords to signal task completion. It has two active states ~TODO~ and ~NEXT~ where ~NEXT~ is the selected next action. The finished tasks are labeled as ~DONE~. The workflow has 1 short-term pause key-word ~WAIT~ and 1 long-term pause keyword ~QUIT~.
++ Research Workflow - This is a flow I use in my Notes to list what actions, questions, and next steps I want to do when I am further researching the topics they cover. I use emojis to encode the information
+  - 📚 Represents reference and further reading on this topic
+  - ❓ A question that got while processing content of this note. Means I hope to research further to answer the question
+  - 🤔 A personal thought or opinion but not yet convinced to create a new note about it. This is nursery for my thoughts.
+    #+begin_src emacs-lisp
+
+  (after! org
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "|" "DONE(d!)" "QUIT(q@)")
+            (sequence "📚(r)" "❓(q)" "🤔(a)" "|" "✅(y)"))))
+
+    #+end_src
+
 *** Org Roam
 
 Installs ~org-roam~ from the gitrepo. To refresh the package ~doom sync~ must be called.
