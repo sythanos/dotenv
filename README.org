@@ -540,13 +540,17 @@ I use two core templates for new org-roam nodes.
 
 #+end_src
 
-I also use special dailies template
+I also use special journal templates. For this I need first add some time format functions.
+#+begin_src emacs-lisp
+
+#+end_src
+
+And finally define new dailies templates.
 #+begin_src emacs-lisp
 (after! org-roam
   (setq org-roam-dailies-capture-templates
-        '(("d" "Daily Note" plain "%?"
-           :target(file+head "%<%Y-%m-%d>.org"
-           "#+TITLE: %<Y-%m-%d>\n#+FILETAGS: Daily\n \nNext: \nPrevious: \n \n* Morning Kick-off\n")
+        '(("m" "Daily-0: Morning Kick-off" plain (file "Templates/daily_0.org")
+           :target(file "%<%Y-%m-%d>.org")
            :unnarrowed t)
           ("j" "Day Journal Entry" entry "* %<%H:%M>\n%?%i"
            :target (file+olp "%<%Y-%m-%d>.org" ("Journal"))))))
@@ -558,7 +562,7 @@ I also want to define a goto functions which will skip the template selection an
 
 (defun urb/org-roam-goto-today ()
   (interactive)
-  (org-roam-dailies-capture-today t "d"))
+  (org-roam-dailies-capture-today t "m"))
 
 #+end_src
 
