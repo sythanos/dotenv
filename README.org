@@ -501,14 +501,6 @@ Loads ~org-roam~ package and provides basic configuration
 
 #+end_src
 
-Configures my org-roam dailies
-#+begin_src emacs-lisp
-
-(after! org-roam
-  (setq org-roam-dailies-directory "Journal/"))
-
-#+end_src
-
 Provides the key bindings for org-roam in my system
 #+begin_src emacs-lisp
 
@@ -540,46 +532,16 @@ I use two core templates for new org-roam nodes.
 
 #+end_src
 
-I also use special journal templates. For this I need first add some time format functions.
+I use a special file [[id:187c187f-d3bd-4b66-aa27-32b0f0f4e58a][📓 Journal]] to keep my journal entries. I do use `datetree` organisation.
 #+begin_src emacs-lisp
 
-#+end_src
-
-And finally define new dailies templates.
-#+begin_src emacs-lisp
-(after! org-roam
-  (setq org-roam-dailies-capture-templates
-        '(("m" "Daily-0: Morning Kick-off" plain (file "Templates/daily_0.org")
-           :target(file "%<%Y-%m-%d>.org")
-           :unnarrowed t)
-          ("j" "Day Journal Entry" entry "* %<%H:%M>\n%?%i"
-           :target (file+olp "%<%Y-%m-%d>.org" ("Journal"))))))
+(after! org-capture
+  (setq org-capture-templates
+        '(("j" "Journal Entry" entry
+           (file+datetree "Journal.org")
+           "* %<%H:%M>%?%i" :unnarrowed t :tree-type week))))
 
 #+end_src
-
-I also want to define a goto functions which will skip the template selection and go straight to daily note
-#+begin_src emacs-lisp
-
-(defun urb/org-roam-goto-today ()
-  (interactive)
-  (org-roam-dailies-capture-today t "m"))
-
-#+end_src
-
-Finally I provide some mappings for the daily notes.
-
-#+begin_src emacs-lisp
-
-(map! (:map org-mode-map
-        :leader
-        :prefix ("nr" . "org-roam")
-        "c" #'org-roam-dailies-capture-today
-        "t" #'urb/org-roam-goto-today))
-
-
-#+end_src
-
-
 
 **** Org Roam Bibtex
 
