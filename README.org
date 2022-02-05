@@ -295,6 +295,15 @@ I want to custmize my org keywords
 
 #+end_src
 
+I also overwrite some UI display faces for some org elements
+#+begin_src emacs-lisp
+
+(custom-theme-set-faces
+ 'user
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :foreground "dark orange" :height 0.9)))))
+
+#+end_src
+
 I also want to auto-preview latex as soon as I leave the code block. For this I need to install a new pacakge /org-fragtog/
 #+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
 
