@@ -286,7 +286,7 @@ And now to more specific config.
 
 *** Styling my org pages
 
-I want to custmize my org keywords
+I want to customize my org keywords
 #+begin_src emacs-lisp
 
 (after! org
@@ -304,6 +304,15 @@ I also overwrite some UI display faces for some org elements
 
 #+end_src
 
+I also want to auto-display all inline images and latex fragments like equations.
+#+begin_src emacs-lisp
+
+(after! org
+  (setq org-startup-with-inline-images t
+        org-startup-with-latex-preview t))
+
+#+end_src
+
 I also want to auto-preview latex as soon as I leave the code block. For this I need to install a new pacakge /org-fragtog/
 #+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
 
@@ -318,6 +327,7 @@ And then enable it.
   :init (add-hook 'org-mode-hook 'org-fragtog-mode))
 
 #+end_src
+
 *** Auto Tangle My Main Configuration File
 
 #+begin_src emacs-lisp
@@ -532,7 +542,7 @@ I use two core templates for new org-roam nodes.
 (after! org-roam
   (setq org-roam-capture-templates
         '(("n" "Note" plain "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: latexpreview\n")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n")
            :unnarrowed t)
           ("r" "Reference" plain "%?"
            :target (file+head "Literature/${citekey}.org"
