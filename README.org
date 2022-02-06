@@ -481,7 +481,7 @@ I have two real workflows in my org files:
 
   (after! org
     (setq org-todo-keywords
-          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "|" "DONE(d!)" "QUIT(q@)")
+          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "|" "DONE(d!)" "QUIT(Q@)")
             (sequence "📚(r)" "❓(q)" "🤔(a)" "|" "✅(y)"))))
 
     #+end_src
