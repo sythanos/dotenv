@@ -548,7 +548,10 @@ I use a special file [[id:187c187f-d3bd-4b66-aa27-32b0f0f4e58a][📓 Journal]] t
   (setq org-capture-templates
         '(("j" "Journal Entry" entry
            (file+datetree "Journal.org")
-           "* %<%H:%M>%?%i" :unnarrowed t :tree-type week))))
+           "* %<%H:%M>%?%i" :unnarrowed t :tree-type week)
+          ("t" "New Task" entry
+           (file "Inbox.org")
+           "* TODO %?%i"))))
 
 #+end_src
 
