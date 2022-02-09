@@ -263,6 +263,23 @@ And enable the package when opening epub files.
 
 #+end_src
 
+I am also using anki to learn new languages and to improve rote memorization's. For easier creation of notes I want to install /anki-editor/ package.
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! anki-editor)
+
+#+end_src
+
+Next I configure the anki-editor
+#+begin_src emacs-lisp
+
+(use-package! anki-editor
+  :after org
+  :config
+  (setq anki-editor-create-decks t))
+
+#+end_src
+
 ** Org
 
 Let's first define some important paths and then set the ~org-directory~, which must be set before org loads up.
@@ -477,7 +494,9 @@ I want to add all of my org files in my cortex to agenda files
 #+begin_src emacs-lisp
 
 (after! org
-  (setq org-agenda-files (list urb/cortex-dir urb/cortex-dailies-dir)))
+  (setq org-agenda-files (list
+                          (concat urb/cortex-dir "Tasks.org")
+                          (concat urb/cortex-dir "Agenda.org"))))
 
 #+end_src
 
