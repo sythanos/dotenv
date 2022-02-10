@@ -764,7 +764,7 @@ port 587
 protocol smtp
 from urban.avsec@outlook.com
 user urban.avsec@outlook.com
-passwordeval security find-generic-passowrd -s mu4e-outlook -a urban.avsec@outlook.com -w
+passwordeval security find-generic-password -s mbsync-outlook -a urban.avsec@outlook.com -w
 tls on
 tls_starttls on
 
