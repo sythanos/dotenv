@@ -5,7 +5,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.doom.d/config.el
 #+STARTUP: fold
 
-* Emacs Config
+* Emacs
 :PROPERTIES:
 :ID:       ef84f824-9440-42b2-b69d-bc07aa10c5ef
 :END:
@@ -186,7 +186,7 @@
        ;;zig               ; C, but simpler
 
        :email
-       ;;(mu4e +org +gmail)
+       (mu4e +org +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 
@@ -278,6 +278,33 @@ Next I configure the anki-editor
   :config
   (setq anki-editor-create-decks t))
 
+#+end_src
+
+*** Mu4e Configurations
+Emacs is also my mail client. I am using mu4e for this job. I need to configure my contexts to be used in the mail per account.
+#+begin_src emacs-lisp
+
+(after! mu4e
+  (set-email-account! "outlook"
+                      '((mu4e-sent-folder        . "/outlook/Sent")
+                        (mu4e-drafts-folder      . "/outlook/Drafts")
+                        (mu4e-trash-folder       . "/outlook/Trash")
+                        (mu4e-refile-folder      . "/outlook/AllMail")
+                        (smtpmail-smtp-user      . "urban.avsec@outlook.com")
+                        (mu4e-compose-signature  . "---\nKind Regards\nUrban Avsec"))
+                      t))
+
+#+end_src
+
+To send email I am using msmtp. I need to connect mu4e wit msmtp
+#+begin_src emacs-lisp
+
+(after! mu4e
+  (setq sendmail-program (executable-find "msmtp")
+        send-mail-function #'smtpmail-send-it
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        message-send-mail-function #'message-send-mail-with-sendmail))
 #+end_src
 
 ** Org
@@ -682,4 +709,73 @@ Next I change how I display title in deft.
 (after! deft
   (advice-add 'deft-parse-title :override #'urb/deft-parse-title))
 
+#+end_src
+* Mail
+I use mbsync to sync the files to my .maildir folder and I use msmtp to send new files. The configuration per account is listed bellow.
+** Headers
+#+begin_src rcfile :tangle ~/.msmtprc
+defaults
+logfile ~/.maildir/msmtp.log
+
+#+end_src
+
+** urban.avsec@outlook.com
+*** mbsync settings
+#+begin_src rcfile :tangle ~/.mbsyncrc
+# ==================== Outlook ==========================
+IMAPAccount outlook
+Host outlook.office365.com
+User urban.avsec@outlook.com
+PassCmd "security find-generic-password -s mbsync-outlook -a urban.avsec@outlook.com -w"
+Port 993
+SSLType IMAPS
+SSLVersions TLSv1.2
+# Increase Timeout to avoid o365 IMAP timeouts
+Timeout 120
+PipelineDepth 50
+
+IMAPStore outlook-remote
+Account outlook
+
+MaildirStore outlook-local
+SubFolders Verbatim
+Path ~/.maildir/outlook/
+Inbox ~/.maildir/outlook/Inbox
+
+Channel outlook
+Far :outlook-remote:
+Near :outlook-local:
+Patterns *
+Create Near
+Sync All
+Expunge Both
+SyncState *
+
+#+end_src
+
+*** msmtp settings
+#+begin_src rcfile :tangle ~/.msmtprc
+# ==================== Outlook ==========================
+
+account outlook
+auth on
+host smtp-mail.outlook.com
+port 587
+protocol smtp
+from urban.avsec@outlook.com
+user urban.avsec@outlook.com
+passwordeval security find-generic-passowrd -s mu4e-outlook -a urban.avsec@outlook.com -w
+tls on
+tls_starttls on
+
+#+end_src
+
+** Footnotes
+#+begin_src rcfile :tangle ~/.mbsyncrc
+# ===================== End ===========================
+#+end_src
+
+#+begin_src rcfile :tangle ~/.msmtprc
+# ===================== End ===========================
+account default : outlook
 #+end_src
