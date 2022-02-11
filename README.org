@@ -292,6 +292,14 @@ Emacs is also my mail client. I am using mu4e for this job. I need to configure 
                         (mu4e-refile-folder      . "/outlook/AllMail")
                         (smtpmail-smtp-user      . "urban.avsec@outlook.com")
                         (mu4e-compose-signature  . "---\nKind Regards\nUrban Avsec"))
+                      t)
+  (set-email-account! "icloud"
+                      '((mu4e-sent-folder        . "/icloud/Sent")
+                        (mu4e-drafts-folder      . "/icloud/Drafts")
+                        (mu4e-trash-folder       . "/icloud/Trash")
+                        (mu4e-refile-folder      . "/icloud/AllMail")
+                        (smtpmail-smtp-user      . "urban.avsec@icloud.com")
+                        (mu4e-compose-signature  . "---\nKind Regards\nUrban Avsec"))
                       t))
 
 #+end_src
@@ -767,6 +775,53 @@ user urban.avsec@outlook.com
 passwordeval security find-generic-password -s mbsync-outlook -a urban.avsec@outlook.com -w
 tls on
 tls_starttls on
+
+#+end_src
+** urban.avsec@icloud.com
+*** mbsync settings
+#+begin_src rcfile :tangle ~/.mbsyncrc
+# ==================== iCloud ==========================
+IMAPAccount icloud
+Host imap.mail.me.com
+User urban.avsec
+PassCmd "security find-generic-password -s mbsync-icloud-password -a urban.avsec -w"
+Port 993
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs PLAIN
+
+IMAPStore icloud-remote
+Account icloud
+
+MaildirStore icloud-local
+SubFolders Verbatim
+Path ~/.maildir/icloud/
+Inbox ~/.maildir/icloud/Inbox
+
+Channel icloud
+Far :icloud-remote:
+Near :icloud-local:
+Patterns *
+Create Near
+Sync All
+Expunge Both
+SyncState *
+
+#+end_src
+*** msmtp settings
+#+begin_src rcfile :tangle ~/.msmtprc
+# ==================== iCloud ==========================
+
+account icloud
+auth on
+host smtp.mail.me.com
+port 465
+protocol smtp
+from urban.avsec@icloud.com
+user urban.avsec
+passwordeval security find-generic-password -s mbsync-icloud-password -a urban.avsec -w
+tls on
+tls_starttls off
 
 #+end_src
 
