@@ -368,7 +368,8 @@ I want to customize my org keywords
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "red" :weight bold)
           ("PROJ" :foreground "forest green" :height 1.25 :weight bold)
-          ("SUB-PROJ" :foreground "forest green" :height 1.1 :weight bold))))
+          ("SUB-PROJ" :foreground "forest green" :height 1.1 :weight bold)
+          ("NEXT" :foreground "DeepSkyBlue" :height 1.05 :weight bold))))
 
 #+end_src
 
