@@ -1,7 +1,8 @@
 :PROPERTIES:
 :ID:       fa113cbd-e8d3-42c5-97ae-eaa82a8257ec
 :END:
-#+TITLE: ⚙️ My Config #+PROPERTY: header-args:emacs-lisp :tangle ~/.doom.d/config.el
+#+TITLE: ⚙️ My Config
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.doom.d/config.el
 #+STARTUP: fold
 
 * Emacs
