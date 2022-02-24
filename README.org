@@ -300,9 +300,18 @@ Next I configure the anki-editor
 (use-package! anki-editor
   :after org
   :config
-  (setq anki-editor-create-decks t))
+  (setq anki-editor-create-decks t)
+  (map! :map org-mode-map
+        :leader
+        :prefix ("A" . "anki")
+        "c" #'anki-editor-insert-note
+        "p" #'anki-editor-push-notes)
+  (anki-editor-mode))
 
 #+end_src
+
+#+RESULTS:
+: t
 
 *** Mu4e Configurations
 Emacs is also my mail client. I am using mu4e for this job. I need to configure my contexts to be used in the mail per account.
