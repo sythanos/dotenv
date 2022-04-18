@@ -353,7 +353,7 @@ To send email I am using msmtp. I need to connect mu4e wit msmtp
 Let's first define some important paths and then set the ~org-directory~, which must be set before org loads up.
 #+begin_src emacs-lisp
 
-(defvar urb/cortex-dir (concat urb/iCloud-path "Cortex/"))
+(defvar urb/cortex-dir (concat urb/iCloud-path "MyEden/"))
 (defvar urb/cortex-dailies-dir (concat urb/cortex-dir "Journal/"))
 (setq org-directory urb/cortex-dir)
 
@@ -631,7 +631,6 @@ Loads ~org-roam~ package and provides basic configuration
   :config
   (setq org-roam-directory urb/cortex-dir)
   (org-roam-setup))
-
 
 #+end_src
 
