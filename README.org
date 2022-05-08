@@ -457,8 +457,8 @@ And then enable it.
 
 Let's first define path to my =.bib= file and location where my pdfs and epubs will be stored
 #+begin_src emacs-lisp
-(defvar urb/reference-files (list (concat urb/iCloud-path "Library/References.bib")))
-(defvar urb/reference-sources-dirs (list(concat urb/iCloud-path "Library/Files/")))
+(defvar urb/reference-files (list (concat urb/cortex-dir "References/Bibliography.bib")))
+(defvar urb/reference-sources-dirs (list(concat urb/cortex-dir "References/Books/")))
 
 #+end_src
 
@@ -658,6 +658,10 @@ I use two core templates for new org-roam nodes.
         '(("n" "Note" plain "%?"
            :target (file+head "%<%Y%m%d%H%M%S>.org"
                               ":PROPERTIES:\n:ID: ${note-id}\n:END:\n#+TITLE: ${note-id} - ${title}\n")
+           :unnarrowed t)
+          ("s" "Source Note" plain "%?"
+           :target (file+head "References/SourceNotes/${citekey}.org"
+                              "#+TITLE: ${title}\n#+FILETAGS: Source\n")
            :unnarrowed t)
           ("m" "MOC" plain "%?"
            :target (file+head "${moc-id}.org"
