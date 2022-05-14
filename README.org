@@ -88,7 +88,7 @@
        eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       ;;vterm             ; the best terminal emulation in Emacs
+       vterm             ; the best terminal emulation in Emacs
 
        :checkers
        syntax                    ; tasing you for every semicolon you forget
@@ -310,8 +310,22 @@ Next I configure the anki-editor
 
 #+end_src
 
-#+RESULTS:
-: t
+*** Bazel Support
+Install bazel mode package from repo
+#+begin_src emacs-lisp :tangle ~/.doom.d/packages.el
+
+(package! emacs-bazel-mode
+  :recipe (:host github :repo "bazelbuild/emacs-bazel-mode"))
+
+#+end_src
+
+Enable the Bazel Support
+#+begin_src emacs-lisp
+
+; (use-package! bazel)
+
+#+end_src
+
 
 *** Mu4e Configurations
 Emacs is also my mail client. I am using mu4e for this job. I need to configure my contexts to be used in the mail per account.
