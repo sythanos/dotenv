@@ -6,9 +6,6 @@
 #+STARTUP: fold
 
 * Emacs
-:PROPERTIES:
-:ID:       ef84f824-9440-42b2-b69d-bc07aa10c5ef
-:END:
 ** Headers
 #+begin_src emacs-lisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -234,10 +231,13 @@ Allow the use of native fullscreen window in Mac Emacs
 Set ups the main theme of my emacs
 #+begin_src emacs-lisp
 
-(setq doom-theme 'doom-gruvbox)
+(setq doom-theme 'doom-acario-dark)
 (setq display-line-numbers-type t)
 
 #+end_src
+
+#+RESULTS:
+: t
 
 Also change my font and font size
 #+begin_src emacs-lisp
@@ -475,8 +475,8 @@ And then enable it.
 
 Let's first define path to my =.bib= file and location where my pdfs and epubs will be stored
 #+begin_src emacs-lisp
-(defvar urb/reference-files (list (concat urb/cortex-dir "References/Bibliography.bib")))
-(defvar urb/reference-sources-dirs (list(concat urb/cortex-dir "References/Books/")))
+
+(defvar urb/reference-files (list (concat urb/cortex-dir "MyReferences.bib")))
 
 #+end_src
 
@@ -501,8 +501,7 @@ Configure ~citar~ pacakge to work in org mode
         (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
         (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
   (setq citar-symbol-separator "  ")
-  (setq citar-bibliography urb/reference-files
-        citar-library-paths urb/reference-sources-dirs))
+  (setq citar-bibliography urb/reference-files))
 #+end_src
 
 Finally setup Org Cite package to enable the citations
@@ -623,7 +622,7 @@ I have two real workflows in my org files:
 
   (after! org
     (setq org-todo-keywords
-          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "|" "DONE(d!)" "KILL(K@)")
+          '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "|" "DONE(d!)" "KILL(K)")
             (sequence "📚(r)" "📖(l)" "❓(q)" "🤔(a)" "|" "✅(y)")
             (sequence "PROJ(p)" "SUB-PROJ(s)" "|" "COMPLETED(c)"))))
 
@@ -675,15 +674,7 @@ I use two core templates for new org-roam nodes.
   (setq org-roam-capture-templates
         '(("n" "Note" plain "%?"
            :target (file+head "%<%Y%m%d%H%M%S>.org"
-                              ":PROPERTIES:\n:ID: ${note-id}\n:END:\n#+TITLE: ${note-id} - ${title}\n")
-           :unnarrowed t)
-          ("s" "Source Note" plain "%?"
-           :target (file+head "References/SourceNotes/${citekey}.org"
-                              "#+TITLE: ${title}\n#+FILETAGS: Source\n")
-           :unnarrowed t)
-          ("m" "MOC" plain "%?"
-           :target (file+head "${moc-id}.org"
-                              "#+TITLE: ${moc-id} - ${title}\n#+FILETAGS: MOC\n")
+                              "#+TITLE: ${title}\n")
            :unnarrowed t))))
 
 #+end_src
@@ -706,7 +697,7 @@ I use a special file [[id:187c187f-d3bd-4b66-aa27-32b0f0f4e58a][📓 Journal]] t
 
 Integrate ~org-roam~ with my citations using ~org-roam-bibtex~
 
-Firstly install ~org-roam-bibtex~ from repo
+Firstly install ~org-roam-bibtex~ from repository
 
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
 
@@ -715,7 +706,7 @@ Firstly install ~org-roam-bibtex~ from repo
 
 #+end_src
 
-Then enable the package and integrate it with the ~citar~ citation procesor. For its config look at [[Citations in Org Files]] section.
+Then enable the package and integrate it with the ~citar~ citation processor. For its config look at [[Citations in Org Files]] section.
 
 #+begin_src emacs-lisp
 (use-package! org-roam-bibtex
@@ -727,7 +718,7 @@ Then enable the package and integrate it with the ~citar~ citation procesor. For
 
 #+end_src
 
-Adds the core keybindings for interraction with references from emacs
+Adds the core keybindings for interaction with references from Emacs
 
 #+begin_src emacs-lisp
 (map! (:map org-mode-map
